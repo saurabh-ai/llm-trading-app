@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg14
+    environment:
+      POSTGRES_DB: trading_platform
+      POSTGRES_USER: trading_user
+      POSTGRES_PASSWORD: trading_password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+      - ./docker/init-scripts:/docker-entrypoint-initdb.d
+    command: ["postgres", "-c", "shared_preload_libraries=timescaledb"]
+    restart: unless-stopped
+    networks:
+      - trading-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    networks:
+      - trading-network
+
+  # Application service (for production)
+  api:
+    build: .
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://trading_user:trading_password@timescaledb:5432/trading_platform
+      REDIS_URL: redis://redis:6379
+      BINANCE_WEBSOCKET_URL: wss://stream.binance.com:9443/ws/
+      PORT: 3000
+      LOG_LEVEL: info
+    ports:
+      - "3000:3000"
+    depends_on:
+      - timescaledb
+      - redis
+    restart: unless-stopped
+    networks:
+      - trading-network
+    volumes:
+      - ./logs:/app/logs
+
+volumes:
+  timescaledb_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  trading-network:
+    driver: bridge

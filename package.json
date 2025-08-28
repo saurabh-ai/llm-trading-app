@@ -1,0 +1,67 @@
+{
+  "name": "llm-trading-app",
+  "version": "1.0.0",
+  "description": "A comprehensive real-time cryptocurrency trading platform backend with candlestick chart functionality, built for scalability and performance. This platform provides live price feeds, multi-timeframe chart data, and seamless integration with TradingView frontend components.",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "type-check": "tsc --noEmit",
+    "migrate": "node dist/scripts/migrate.js",
+    "migrate:create": "node dist/scripts/create-migration.js",
+    "seed": "node dist/scripts/seed.js",
+    "poller": "node dist/services/price-poller.js",
+    "websocket": "node dist/services/websocket-server.js",
+    "health": "curl http://localhost:3000/health"
+  },
+  "keywords": [
+    "cryptocurrency",
+    "trading",
+    "timescaledb",
+    "binance",
+    "websocket",
+    "real-time",
+    "candles"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^8.16.0",
+    "pg": "^8.11.3",
+    "redis": "^4.6.12",
+    "winston": "^3.11.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "compression": "^1.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@types/ws": "^8.5.10",
+    "@types/pg": "^8.10.9",
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/compression": "^1.7.5",
+    "@types/jest": "^29.5.11",
+    "typescript": "^5.3.3",
+    "tsx": "^4.7.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
