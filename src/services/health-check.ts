@@ -203,6 +203,7 @@ export class HealthCheckService {
     });
 
     // Error handler
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.app.use((error: Error, req: Request, res: Response, _next: any) => {
       logger.error('Unhandled error in express app', {
         error: error.message,
